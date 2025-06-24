@@ -28,5 +28,5 @@ namespace LibertyActivator.Views.Windows
 			base.Close();
 			Environment.Exit(0);
 		}
-	}
+    }
 }

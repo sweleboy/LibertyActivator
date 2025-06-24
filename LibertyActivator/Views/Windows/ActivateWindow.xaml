@@ -4,53 +4,110 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:LibertyActivator.Views.Windows"
+		xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 		mc:Ignorable="d"
 		WindowStyle="None"
 		Title="ActivateWindow"
 		AllowsTransparency="True"
+		FontFamily="pack://application:,,,/Resources/#panton"
 		Background="Transparent"
 		WindowStartupLocation="CenterScreen"
 		Height="350"
-		Width="275">
-	<Border CornerRadius="7"
+		Width="250">
+	<Border CornerRadius="10"
 			Background="#1b1b1b">
 		<Grid>
 			<Border x:Name="HeaderPanel"
 					MouseDown="HeaderPanel_MouseDown"
-					Background="#161616"
+					Background="#121212"
 					Height="40"
-					CornerRadius="7 7 0 0"
+					CornerRadius="10 10 0 0"
 					VerticalAlignment="Top">
 				<Grid>
-					<TextBlock Text="LibertyAcivator"
-							   FontSize="15"
-							   FontWeight="SemiBold"
+					<TextBlock Text="Liberty Acivator"
+							   FontSize="16.5"
 							   Foreground="White"
 							   VerticalAlignment="Center"
 							   Margin="15 10" />
-					<StackPanel Width="80"
+					<StackPanel Width="85"
 								HorizontalAlignment="Right"
 								Orientation="Horizontal"
 								Margin="5 0 0 0">
 
-						<Button Style="{StaticResource SvgButtonStyle}"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Right"
+						<Button Cursor="Hand"
+								Height="30"
 								Margin="0 0 5 0"
-								Tag="M 10 17.5 L 25 17.5"
-								Name="MinimizeButton"
-								Click="MinimizeButton_Click"/>
-						
-						<Button Style="{StaticResource SvgButtonStyle}"
 								VerticalAlignment="Center"
+								Background="Transparent"
+								BorderBrush="Transparent"
 								HorizontalAlignment="Right"
-								Margin="0"
-								Tag="M 10 10 L 25 25 M 10 25 L 25 10"
-								Name="CloseButton"
-								Click="CloseButton_Click"/>
+								Click="MinimizeButton_Click">
+							<ui:SymbolIcon Symbol="ArrowMinimize24"
+										   Margin="0"
+										   HorizontalAlignment="Center"
+										   VerticalAlignment="Center" />
+						</Button>
+						<Button Cursor="Hand"
+								Height="30"
+								VerticalAlignment="Center"
+								Background="Transparent"
+								BorderBrush="Transparent"
+								HorizontalAlignment="Right"
+								Click="CloseButton_Click">
+							<ui:SymbolIcon Symbol="Dismiss24"
+										   Margin="0"
+										   HorizontalAlignment="Center"
+										   VerticalAlignment="Center" />
+						</Button>
 					</StackPanel>
 				</Grid>
 			</Border>
+
+			<StackPanel Margin="0 40 0 0">
+				<TextBlock Foreground="#7a7a7a"
+						   FontSize="14"
+						   Margin="10 10 10 5"
+						   TextAlignment="Center"
+						   Text="Выбранная конфигурация:" />
+				<TextBlock Foreground="White"
+						   FontSize="14"
+						   TextAlignment="Center"
+						   Margin="10 0 10 0"
+						   Text="win 10 pro" />
+
+
+				<Button Cursor="Hand"
+						Height="175"
+						Width="175"
+						Name="AcitvateButton"
+						Command="{Binding ActivateSystemCommand}"
+						Margin="15"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center">
+					<ui:SymbolIcon Symbol="Play28"
+								   Margin="0"
+								   HorizontalAlignment="Center"
+								   VerticalAlignment="Center" />
+				</Button>
+
+				<StackPanel Orientation="Horizontal"
+							HorizontalAlignment="Center">
+
+					<TextBlock Foreground="White"
+							   FontSize="14"
+							   TextAlignment="Center"
+							   Margin="10"
+							   Text="Сконфигурировать" />
+					<Button Cursor="Hand"
+							Height="30"
+							VerticalAlignment="Center">
+						<ui:SymbolIcon Symbol="Settings24"
+									   Margin="0"
+									   HorizontalAlignment="Center"
+									   VerticalAlignment="Center" />
+					</Button>
+				</StackPanel>
+			</StackPanel>
 		</Grid>
 	</Border>
 </Window>
