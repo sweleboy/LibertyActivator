@@ -1,4 +1,7 @@
-﻿using LibertyActivator.Views.Windows;
+﻿using LibertyActivator.Contracts;
+using LibertyActivator.Services;
+using LibertyActivator.ViewModels;
+using LibertyActivator.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LibertyActivator.Extensions
@@ -15,6 +18,11 @@ namespace LibertyActivator.Extensions
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services)
 		{
 			services.AddSingleton<ActivateWindow>();
+			
+			services.AddSingleton<ActivateViewModel>();
+
+			services.AddTransient<ILicenseKeyService, LicenseKeyService>();
+			services.AddTransient<ILicenseKeysStorage, LicenseKeysStorage>();
 
 			return services;
 		}

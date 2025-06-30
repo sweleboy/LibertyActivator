@@ -12,20 +12,20 @@
 		FontFamily="pack://application:,,,/Resources/#panton"
 		Background="Transparent"
 		WindowStartupLocation="CenterScreen"
-		Height="350"
-		Width="250">
+		Height="375"
+		Width="275">
 	<Border CornerRadius="10"
 			Background="#1b1b1b">
 		<Grid>
 			<Border x:Name="HeaderPanel"
 					MouseDown="HeaderPanel_MouseDown"
 					Background="#121212"
-					Height="40"
+					Height="50"
 					CornerRadius="10 10 0 0"
 					VerticalAlignment="Top">
 				<Grid>
 					<TextBlock Text="Liberty Acivator"
-							   FontSize="16.5"
+							   FontSize="18.5"
 							   Foreground="White"
 							   VerticalAlignment="Center"
 							   Margin="15 10" />
@@ -35,7 +35,7 @@
 								Margin="5 0 0 0">
 
 						<Button Cursor="Hand"
-								Height="30"
+								Height="40"
 								Margin="0 0 5 0"
 								VerticalAlignment="Center"
 								Background="Transparent"
@@ -48,7 +48,7 @@
 										   VerticalAlignment="Center" />
 						</Button>
 						<Button Cursor="Hand"
-								Height="30"
+								Height="40"
 								VerticalAlignment="Center"
 								Background="Transparent"
 								BorderBrush="Transparent"
@@ -63,14 +63,14 @@
 				</Grid>
 			</Border>
 
-			<StackPanel Margin="0 40 0 0">
+			<StackPanel Margin="0 50 0 0">
 				<TextBlock Foreground="#7a7a7a"
-						   FontSize="14"
+						   FontSize="16"
 						   Margin="10 10 10 5"
 						   TextAlignment="Center"
 						   Text="Выбранная конфигурация:" />
 				<TextBlock Foreground="White"
-						   FontSize="14"
+						   FontSize="16"
 						   TextAlignment="Center"
 						   Margin="10 0 10 0"
 						   Text="win 10 pro" />
@@ -94,7 +94,7 @@
 							HorizontalAlignment="Center">
 
 					<TextBlock Foreground="White"
-							   FontSize="14"
+							   FontSize="16"
 							   TextAlignment="Center"
 							   Margin="10"
 							   Text="Сконфигурировать" />

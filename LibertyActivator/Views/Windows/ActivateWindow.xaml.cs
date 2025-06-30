@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibertyActivator.ViewModels;
+using System;
 using System.Windows;
 
 namespace LibertyActivator.Views.Windows
@@ -8,9 +9,10 @@ namespace LibertyActivator.Views.Windows
 	/// </summary>
 	public partial class ActivateWindow : Window
 	{
-		public ActivateWindow()
+		public ActivateWindow(ActivateViewModel activateViewModel)
 		{
 			InitializeComponent();
+			this.DataContext = activateViewModel;
 		}
 
 		private void HeaderPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

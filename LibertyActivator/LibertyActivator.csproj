@@ -62,6 +62,9 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.6\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -98,9 +101,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Contracts\ILicenseKeyService.cs" />
+    <Compile Include="Contracts\ILicenseKeysStorage.cs" />
     <Compile Include="Extensions\DependencyExtensions.cs" />
     <Compile Include="Helpers\MessageHelper.cs" />
-    <Compile Include="Models\MashineInfo.cs" />
+    <Compile Include="Models\LicenseKey.cs" />
+    <Compile Include="Services\LicenseKeyService.cs" />
+    <Compile Include="Services\LicenseKeysStorage.cs" />
+    <Compile Include="ViewModels\ActivateViewModel.cs" />
+    <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="Views\Windows\ActivateWindow.xaml.cs">
       <DependentUpon>ActivateWindow.xaml</DependentUpon>
     </Compile>
