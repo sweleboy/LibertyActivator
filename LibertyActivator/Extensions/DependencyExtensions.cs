@@ -20,6 +20,8 @@ namespace LibertyActivator.Extensions
 			services.AddSingleton<ActivateWindow>();
 			
 			services.AddSingleton<ActivateViewModel>();
+			services.AddSingleton<ContentDialogViewModel>();
+			services.AddSingleton<IContentDialogService, ContentDialogService>();
 
 			services.AddTransient<ILicenseKeyService, LicenseKeyService>();
 			services.AddTransient<ILicenseKeysStorage, LicenseKeysStorage>();

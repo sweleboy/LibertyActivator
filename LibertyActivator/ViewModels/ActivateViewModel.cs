@@ -5,9 +5,11 @@ namespace LibertyActivator.ViewModels
 {
 	public class ActivateViewModel : ViewModelBase
 	{
-		public ActivateViewModel()
-		{
+		private readonly IContentDialogService _contentDialogService;
 
+		public ActivateViewModel(IContentDialogService contentDialogService)
+		{
+			_contentDialogService = contentDialogService;
 		}
 	}
 }

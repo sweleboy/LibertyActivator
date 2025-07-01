@@ -101,15 +101,22 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Contracts\IContentDialogService.cs" />
     <Compile Include="Contracts\ILicenseKeyService.cs" />
     <Compile Include="Contracts\ILicenseKeysStorage.cs" />
     <Compile Include="Extensions\DependencyExtensions.cs" />
+    <Compile Include="Helpers\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\MessageHelper.cs" />
     <Compile Include="Models\LicenseKey.cs" />
+    <Compile Include="Services\ContentDialogService.cs" />
     <Compile Include="Services\LicenseKeyService.cs" />
     <Compile Include="Services\LicenseKeysStorage.cs" />
     <Compile Include="ViewModels\ActivateViewModel.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ContentDialogViewModel.cs" />
+    <Compile Include="Views\Controls\ContentDialogControl.xaml.cs">
+      <DependentUpon>ContentDialogControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Windows\ActivateWindow.xaml.cs">
       <DependentUpon>ActivateWindow.xaml</DependentUpon>
     </Compile>
@@ -143,6 +150,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\Controls\ContentDialogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Windows\ActivateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

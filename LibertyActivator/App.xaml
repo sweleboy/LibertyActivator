@@ -2,9 +2,12 @@
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+			 xmlns:converters="clr-namespace:LibertyActivator.Helpers.Converters"
 			 xmlns:local="clr-namespace:LibertyActivator">
 	<Application.Resources>
 		<ResourceDictionary>
+			<converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
 			<QuadraticEase EasingMode="EaseInOut"
 						   x:Key="EaseInOut" />
 
