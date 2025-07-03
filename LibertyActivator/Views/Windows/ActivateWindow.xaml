@@ -15,7 +15,7 @@
 		WindowStartupLocation="CenterScreen"
 		Height="375"
 		Width="275">
-	<Border CornerRadius="11"
+	<Border CornerRadius="10"
 			Background="#1b1b1b">
 		<Grid>
 			<Border x:Name="HeaderPanel"
