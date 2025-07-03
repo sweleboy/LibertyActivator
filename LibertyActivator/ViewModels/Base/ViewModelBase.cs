@@ -8,6 +8,11 @@ namespace LibertyActivator.ViewModels.Base
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		protected ViewModelBase()
+		{
+			InitializeCommands();
+		}
+
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -21,6 +26,10 @@ namespace LibertyActivator.ViewModels.Base
 			backingField = value;
 			OnPropertyChanged(propertyName);
 			return true;
+		}
+		protected virtual void InitializeCommands()
+		{
+			return;
 		}
 	}
 }

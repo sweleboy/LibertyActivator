@@ -69,12 +69,12 @@
 						   FontSize="16"
 						   Margin="10 10 10 5"
 						   TextAlignment="Center"
-						   Text="Выбранная конфигурация:" />
+						   Text="Выбранный ключ:" />
 				<TextBlock Foreground="White"
 						   FontSize="16"
 						   TextAlignment="Center"
 						   Margin="10 0 10 0"
-						   Text="win 10 pro" />
+						   Text="{Binding SelectedKey.Name}" />
 
 
 				<Button Cursor="Hand"
@@ -98,7 +98,7 @@
 							   FontSize="16"
 							   TextAlignment="Center"
 							   Margin="10"
-							   Text="Сконфигурировать" />
+							   Text="Настройки" />
 					<Button Cursor="Hand"
 							Height="30"
 							VerticalAlignment="Center">
