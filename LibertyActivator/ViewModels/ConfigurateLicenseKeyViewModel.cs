@@ -33,9 +33,9 @@ namespace LibertyActivator.ViewModels
 
 		public ConfigurateLicenseKeyViewModel(ILicenseKeysStorage licenseKeysStorage, IContentDialogService contentDialogService)
 		{
-			LoadKeys();
 			_licenseKeysStorage = licenseKeysStorage;
 			_contentDialogService = contentDialogService;
+			LoadKeys();
 		}
 		protected override void InitializeCommands()
 		{
