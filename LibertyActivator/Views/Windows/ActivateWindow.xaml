@@ -101,7 +101,8 @@
 							   Text="Настройки" />
 					<Button Cursor="Hand"
 							Height="30"
-							VerticalAlignment="Center">
+							VerticalAlignment="Center"
+							Command="{Binding ShowSettingsCommand}">
 						<ui:SymbolIcon Symbol="Settings24"
 									   Margin="0"
 									   HorizontalAlignment="Center"

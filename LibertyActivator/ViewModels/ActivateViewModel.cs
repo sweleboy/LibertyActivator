@@ -10,12 +10,12 @@ namespace LibertyActivator.ViewModels
 {
 	public class ActivateViewModel : ViewModelBase
 	{
-		public ICommand ShowConfigurateLicenseKeyControlCommand { get; set; }
+		public ICommand ShowSettingsCommand { get; set; }
 
 		private readonly IContentDialogService _contentDialogService;
 		private readonly ConfigurateLicenseKeyControl _configurateLicenseKeyControl;
 		private LicenseKey _selectedKey;
-		private LicenseKey SelectedKey
+		public LicenseKey SelectedKey
 		{
 			get => _selectedKey;
 			set => SetProperty(ref _selectedKey, value, nameof(SelectedKey));
@@ -30,11 +30,11 @@ namespace LibertyActivator.ViewModels
 		}
 		protected override void InitializeCommands()
 		{
-			ShowConfigurateLicenseKeyControlCommand = new SafeRelayCommand(ShowConfigurateLicenseKeyControl);
+			ShowSettingsCommand = new SafeRelayCommand(ShowSettingsControl);
 		}
-		private void ShowConfigurateLicenseKeyControl()
+		private void ShowSettingsControl()
 		{
-			_contentDialogService.ShowDialog(_configurateLicenseKeyControl);
+			_contentDialogService.ShowDialog("Настройки", _configurateLicenseKeyControl);
 			UpdateSelectedKey();
 		}
 		private void InitializeSelectedKey()

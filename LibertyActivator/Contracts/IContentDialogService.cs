@@ -4,7 +4,7 @@ namespace LibertyActivator.Contracts
 {
 	public interface IContentDialogService
 	{
-		void ShowDialog(UserControl contentControl);
+		void ShowDialog(string title, UserControl contentControl);
 		void CloseDialog();
 	}
 }

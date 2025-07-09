@@ -15,12 +15,12 @@ namespace LibertyActivator.Services
 
 		public void CloseDialog()
 		{
-			_contentDialogViewModel.IsShowDialog = false;
-			_contentDialogViewModel.CurrentContent = null;
+			_contentDialogViewModel.Close();
 		}
 
-		public void ShowDialog(UserControl contentControl)
+		public void ShowDialog(string title, UserControl contentControl)
 		{
+			_contentDialogViewModel.Title = title;
 			_contentDialogViewModel.CurrentContent = contentControl;
 			_contentDialogViewModel.IsShowDialog = true;
 		}

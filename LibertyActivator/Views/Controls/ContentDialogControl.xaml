@@ -4,11 +4,44 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:LibertyActivator.Views.Controls"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 mc:Ignorable="d"
 			 Visibility="{Binding IsShowDialog, Converter={StaticResource BoolToVisibilityConverter}}"
 			 d:DesignHeight="450"
 			 d:DesignWidth="800">
 	<Grid Background="#60000000">
-		<ContentControl Content="{Binding CurrentContent}" />
+		<Border CornerRadius="10"
+				Width="auto"
+				Height="auto"
+				Background="#2b2b2b"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Padding="10 10 10 0">
+			<StackPanel>
+				<Grid Height="40">
+					<TextBlock Text="{Binding Title}"
+							   Foreground="White"
+							   HorizontalAlignment="Left"
+							   VerticalAlignment="Center"
+							   TextAlignment="Left"
+							   Margin="5"
+							   FontWeight="SemiBold"
+							   FontSize="16" />
+					<Button Cursor="Hand"
+							Height="40"
+							VerticalAlignment="Center"
+							HorizontalAlignment="Right"
+							Background="Transparent"
+							BorderBrush="Transparent"
+							Command="{Binding CloseDialogCommand}">
+						<ui:SymbolIcon Symbol="Dismiss24"
+									   Margin="0"
+									   HorizontalAlignment="Center"
+									   VerticalAlignment="Center" />
+					</Button>
+				</Grid>
+				<ContentControl Content="{Binding CurrentContent}" />
+			</StackPanel>
+		</Border>
 	</Grid>
 </UserControl>
