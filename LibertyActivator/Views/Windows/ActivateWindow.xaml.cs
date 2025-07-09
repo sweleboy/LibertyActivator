@@ -12,8 +12,8 @@ namespace LibertyActivator.Views.Windows
 		public ActivateWindow(ActivateViewModel activateViewModel, ContentDialogViewModel contentDialogViewModel)
 		{
 			InitializeComponent();
-			this.DataContext = activateViewModel;
-			this.MainContentDialog.DataContext = contentDialogViewModel;
+			DataContext = activateViewModel;
+			MainContentDialog.DataContext = contentDialogViewModel;
 		}
 
 		private void HeaderPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

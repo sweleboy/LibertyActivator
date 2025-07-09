@@ -1,10 +1,11 @@
-﻿using System.Windows.Controls;
+﻿using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace LibertyActivator.Contracts
 {
 	public interface IContentDialogService
 	{
-		void ShowDialog(string title, UserControl contentControl);
+		Task ShowDialogAsync(string title, UserControl contentControl);
 		void CloseDialog();
 	}
 }

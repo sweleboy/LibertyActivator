@@ -1,6 +1,6 @@
 ﻿using LibertyActivator.Commands;
-using LibertyActivator.Contracts;
 using LibertyActivator.ViewModels.Base;
+using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -8,6 +8,8 @@ namespace LibertyActivator.ViewModels
 {
 	public class ContentDialogViewModel : ViewModelBase
 	{
+		public event EventHandler DialogClosed;
+
 		public ICommand CloseDialogCommand { get; set; }
 
 		private bool _isShowDialog;
@@ -16,6 +18,7 @@ namespace LibertyActivator.ViewModels
 			get => _isShowDialog;
 			set => SetProperty(ref _isShowDialog, value, nameof(IsShowDialog));
 		}
+
 		private string _title = string.Empty;
 		public string Title
 		{
@@ -24,7 +27,6 @@ namespace LibertyActivator.ViewModels
 		}
 
 		private UserControl _currentContent;
-
 		public UserControl CurrentContent
 		{
 			get => _currentContent;
@@ -35,11 +37,13 @@ namespace LibertyActivator.ViewModels
 		{
 			CloseDialogCommand = new SafeRelayCommand(Close);
 		}
+
 		public void Close()
 		{
 			Title = string.Empty;
 			IsShowDialog = false;
 			CurrentContent = null;
+			DialogClosed?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

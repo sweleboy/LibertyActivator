@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\SafeAsyncRelayCommand.cs" />
     <Compile Include="Commands\SafeRelayCommand.cs" />
     <Compile Include="Contracts\IContentDialogService.cs" />
     <Compile Include="Contracts\ILicenseKeyService.cs" />

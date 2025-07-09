@@ -4,6 +4,7 @@ using LibertyActivator.Models;
 using LibertyActivator.Services;
 using LibertyActivator.ViewModels.Base;
 using LibertyActivator.Views.Controls;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LibertyActivator.ViewModels
@@ -11,9 +12,12 @@ namespace LibertyActivator.ViewModels
 	public class ActivateViewModel : ViewModelBase
 	{
 		public ICommand ShowSettingsCommand { get; set; }
+		public ICommand ActivateSystemCommand { get; set; }
 
 		private readonly IContentDialogService _contentDialogService;
 		private readonly ConfigurateLicenseKeyControl _configurateLicenseKeyControl;
+		private readonly ILicenseKeyService _licenseKeyService;
+
 		private LicenseKey _selectedKey;
 		public LicenseKey SelectedKey
 		{
@@ -21,33 +25,38 @@ namespace LibertyActivator.ViewModels
 			set => SetProperty(ref _selectedKey, value, nameof(SelectedKey));
 		}
 
-		public ActivateViewModel(IContentDialogService contentDialogService, ConfigurateLicenseKeyControl configurateLicenseKeyControl)
+		public ActivateViewModel(IContentDialogService contentDialogService,
+						   ConfigurateLicenseKeyControl configurateLicenseKeyControl,
+						   ILicenseKeyService licenseKeyService)
 		{
 			_contentDialogService = contentDialogService;
 			_configurateLicenseKeyControl = configurateLicenseKeyControl;
+			_licenseKeyService = licenseKeyService;
 			InitializeSelectedKey();
 			UpdateSelectedKey();
 		}
 		protected override void InitializeCommands()
 		{
-			ShowSettingsCommand = new SafeRelayCommand(ShowSettingsControl);
+			ShowSettingsCommand = new SafeAsyncRelayCommand(ShowSettingsControl);
+			ActivateSystemCommand = new SafeRelayCommand(ActivateSystem);
 		}
-		private void ShowSettingsControl()
+		private async Task ShowSettingsControl()
 		{
-			_contentDialogService.ShowDialog("Настройки", _configurateLicenseKeyControl);
+			await _contentDialogService.ShowDialogAsync("Настройки", _configurateLicenseKeyControl);
 			UpdateSelectedKey();
 		}
 		private void InitializeSelectedKey()
 		{
-			KeyProvider.SetLicenseKey(
-				new LicenseKey(Properties.Settings.Default.SettingsKey,
-				//TODO: Добавить извлечение выбранного ключа из настроек, заполнить его в провайдере, через GetKeyByName
-				string.Empty)
-			);
+			var key = _licenseKeyService.GetKeyByName(Properties.Settings.Default.SelectedKeyName);
+			KeyProvider.SetLicenseKey(key);
 		}
 		private void UpdateSelectedKey()
 		{
 			SelectedKey = KeyProvider.GetLicenseKey();
+		}
+		private void ActivateSystem()
+		{
+
 		}
 	}
 }

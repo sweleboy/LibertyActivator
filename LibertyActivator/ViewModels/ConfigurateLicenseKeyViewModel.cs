@@ -5,6 +5,7 @@ using LibertyActivator.Models;
 using LibertyActivator.Services;
 using LibertyActivator.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace LibertyActivator.ViewModels
@@ -12,6 +13,7 @@ namespace LibertyActivator.ViewModels
 	public class ConfigurateLicenseKeyViewModel : ViewModelBase
 	{
 		private readonly ILicenseKeysStorage _licenseKeysStorage;
+		private readonly IContentDialogService _contentDialogService;
 
 		public ICommand SaveSelectedLicenseKeyCommand { get; set; }
 
@@ -29,10 +31,12 @@ namespace LibertyActivator.ViewModels
 			set => SetProperty(ref _selectedKey, value, nameof(SelectedKey));
 		}
 
-		public ConfigurateLicenseKeyViewModel(ILicenseKeysStorage licenseKeysStorage)
+		public ConfigurateLicenseKeyViewModel(ILicenseKeysStorage licenseKeysStorage, IContentDialogService contentDialogService)
 		{
 			_licenseKeysStorage = licenseKeysStorage;
+			_contentDialogService = contentDialogService;
 			LoadKeys();
+			InitializeSelectedKey();
 		}
 		protected override void InitializeCommands()
 		{
@@ -49,10 +53,15 @@ namespace LibertyActivator.ViewModels
 			KeyProvider.SetLicenseKey(SelectedKey);
 			Properties.Settings.Default.SelectedKeyName = SelectedKey.Name;
 			Properties.Settings.Default.Save();
+			_contentDialogService.CloseDialog();
 		}
 		private void LoadKeys()
 		{
 			Keys = new ObservableCollection<LicenseKey>(_licenseKeysStorage.GetKeys());
+		}
+		private void InitializeSelectedKey()
+		{
+			SelectedKey = Keys.FirstOrDefault(x => x.Name.Equals(Properties.Settings.Default.SelectedKeyName));
 		}
 	}
 }
