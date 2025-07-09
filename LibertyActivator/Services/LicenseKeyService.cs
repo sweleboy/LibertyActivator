@@ -15,7 +15,7 @@ namespace LibertyActivator.Services
 		public LicenseKey GetKeyByName(string name)
 		{
 			var keys = _licenseKeysStorage.GetKeys();
-			return keys.SingleOrDefault(x => x.Name.Equals(name));
+			return keys.FirstOrDefault(x => x.Name.Equals(name));
 		}
 	}
 }

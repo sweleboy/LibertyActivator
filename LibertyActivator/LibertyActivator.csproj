@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Commands\SafeAsyncRelayCommand.cs" />
     <Compile Include="Commands\SafeRelayCommand.cs" />
+    <Compile Include="Contracts\ICmdExecutor.cs" />
     <Compile Include="Contracts\IContentDialogService.cs" />
     <Compile Include="Contracts\ILicenseKeyService.cs" />
     <Compile Include="Contracts\ILicenseKeysStorage.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Helpers\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\MessageHelper.cs" />
     <Compile Include="Models\LicenseKey.cs" />
+    <Compile Include="Services\CmdExecutor.cs" />
     <Compile Include="Services\ContentDialogService.cs" />
     <Compile Include="Services\KeyProvider.cs" />
     <Compile Include="Services\LicenseKeyService.cs" />
