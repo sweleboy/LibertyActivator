@@ -15,8 +15,9 @@ namespace LibertyActivator.Services
 		private readonly string _configPath;
 		public LicenseKeysStorage()
 		{
-			_configPath = GetConfigPath();
+			_configPath = BuildConfigPath();
 		}
+		public string GetConfigPath() => _configPath;
 		public IReadOnlyCollection<LicenseKey> GetKeys()
 		{
 			if (!File.Exists(_configPath))
@@ -28,8 +29,7 @@ namespace LibertyActivator.Services
 			var keysAsJson = File.ReadAllText(_configPath);
 			return JsonConvert.DeserializeObject<IReadOnlyCollection<LicenseKey>>(keysAsJson);
 		}
-
-		private string GetConfigPath()
+		private string BuildConfigPath()
 		{
 			var appDir = AppDomain.CurrentDomain.BaseDirectory;
 

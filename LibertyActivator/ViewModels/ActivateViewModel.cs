@@ -43,7 +43,7 @@ namespace LibertyActivator.ViewModels
 		protected override void InitializeCommands()
 		{
 			ShowSettingsCommand = new SafeAsyncRelayCommand(ShowSettingsControl);
-			ActivateSystemCommand = new SafeRelayCommand(ActivateSystem);
+			ActivateSystemCommand = new SafeAsyncRelayCommand(ActivateSystemAsync);
 		}
 		private async Task ShowSettingsControl()
 		{
@@ -59,9 +59,9 @@ namespace LibertyActivator.ViewModels
 		{
 			SelectedKey = KeyProvider.GetLicenseKey();
 		}
-		private void ActivateSystem()
+		private async Task ActivateSystemAsync()
 		{
-			_cmdExecutor.ExecuteCommandWithAdministratorPermissions(
+			await _cmdExecutor.ExecuteCommandWithAdministratorPermissionsAsync(
 				SetProductKeyCliCommand.Create(KeyProvider.GetLicenseKey()),
 				new ActivateWindowsCommand(),
 				new SetKmsServerCommand()

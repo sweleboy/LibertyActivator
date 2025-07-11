@@ -4,42 +4,49 @@ using LibertyActivator.Models.CliCommands;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LibertyActivator.Services
 {
 	public class CmdExecutor : ICmdExecutor
 	{
-		public void ExecuteCommand(params ICliCommand[] commands)
+		public async Task ExecuteCommandAsync(params ICliCommand[] commands)
 		{
 			var processStartInfo = BuildCmdProcessStartInfo(commands);
-			ExecuteProcess(processStartInfo);
+			await ExecuteProcessAsync(processStartInfo);
 		}
 
-		public void ExecuteCommandWithAdministratorPermissions(params ICliCommand[] commands)
+		public async Task ExecuteCommandWithAdministratorPermissionsAsync(params ICliCommand[] commands)
 		{
 			var processStartInfo = BuildCmdProcessStartInfo(commands);
 			processStartInfo.Verb = "runas";
 			processStartInfo.UseShellExecute = false;
 
-			ExecuteProcess(processStartInfo);
+			await ExecuteProcessAsync(processStartInfo);
 		}
 
-		private void ExecuteProcess(ProcessStartInfo processStartInfo)
+		private async Task ExecuteProcessAsync(ProcessStartInfo processStartInfo)
 		{
 			try
 			{
-				using (Process process = Process.Start(processStartInfo))
+				using (Process process = new Process { StartInfo = processStartInfo })
 				{
-					process.EnableRaisingEvents = true;
+					var tcs = new TaskCompletionSource<bool>();
 
+					process.EnableRaisingEvents = true;
 					process.Exited += (s, e) =>
 					{
-						if (process?.ExitCode != 0)
+						if (process.ExitCode != 0)
 						{
-							MessageHelper.ShowError("Ошибка при выполнении команды", $"Ошибка выполнения команд. Код завершения: {process.ExitCode}\nПопробуйте запустить программу от имени Администратора.");
+							MessageHelper.ShowError("Ошибка при выполнении команды",
+								$"Ошибка выполнения команд. Код завершения: {process.ExitCode}\n" +
+								"Попробуйте запустить программу от имени Администратора.");
 						}
+						tcs.TrySetResult(true);
 					};
-					process.WaitForExit();
+
+					process.Start();
+					await tcs.Task;
 				}
 			}
 			catch (Exception ex)

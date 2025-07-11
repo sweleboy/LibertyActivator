@@ -11,10 +11,27 @@
 			 d:DesignWidth="800">
 
 	<StackPanel Margin="15 0">
-		<TextBlock Text="Выберите ключ:"
-				   FontWeight="SemiBold"
-				   Foreground="#7A7A7A"
-				   FontSize="13" />
+		<StackPanel Orientation="Horizontal">
+
+			<TextBlock Text="Выберите ключ:"
+					   FontWeight="SemiBold"
+					   Foreground="#7A7A7A"
+					   VerticalAlignment="Center"
+					   FontSize="13" />
+			<Button Cursor="Hand"
+					Margin="5"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Right"
+					Background="Transparent"
+					ToolTip="Открыть файл"
+					BorderBrush="Transparent"
+					Command="{Binding OpenKeysFileCommand}">
+				<ui:SymbolIcon Symbol="Open24"
+							   Margin="0"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center" />
+			</Button>
+		</StackPanel>
 
 		<Border CornerRadius="5"
 				BorderThickness="1"

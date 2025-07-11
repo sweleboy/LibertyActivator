@@ -6,5 +6,6 @@ namespace LibertyActivator.Contracts
 	public interface ILicenseKeysStorage
 	{
 		IReadOnlyCollection<LicenseKey> GetKeys();
+		string GetConfigPath();
 	}
 }
