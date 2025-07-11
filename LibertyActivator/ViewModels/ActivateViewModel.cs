@@ -1,6 +1,9 @@
 ﻿using LibertyActivator.Commands;
 using LibertyActivator.Contracts;
+using LibertyActivator.Helpers;
 using LibertyActivator.Models;
+using LibertyActivator.Models.CliCommands;
+using LibertyActivator.Models.Commands;
 using LibertyActivator.Services;
 using LibertyActivator.ViewModels.Base;
 using LibertyActivator.Views.Controls;
@@ -17,7 +20,7 @@ namespace LibertyActivator.ViewModels
 		private readonly IContentDialogService _contentDialogService;
 		private readonly ConfigurateLicenseKeyControl _configurateLicenseKeyControl;
 		private readonly ILicenseKeyService _licenseKeyService;
-
+		private readonly ICmdExecutor _cmdExecutor;
 		private LicenseKey _selectedKey;
 		public LicenseKey SelectedKey
 		{
@@ -27,11 +30,13 @@ namespace LibertyActivator.ViewModels
 
 		public ActivateViewModel(IContentDialogService contentDialogService,
 						   ConfigurateLicenseKeyControl configurateLicenseKeyControl,
-						   ILicenseKeyService licenseKeyService)
+						   ILicenseKeyService licenseKeyService,
+						   ICmdExecutor cmdExecutor)
 		{
 			_contentDialogService = contentDialogService;
 			_configurateLicenseKeyControl = configurateLicenseKeyControl;
 			_licenseKeyService = licenseKeyService;
+			_cmdExecutor = cmdExecutor;
 			InitializeSelectedKey();
 			UpdateSelectedKey();
 		}
@@ -56,7 +61,12 @@ namespace LibertyActivator.ViewModels
 		}
 		private void ActivateSystem()
 		{
-
+			_cmdExecutor.ExecuteCommandWithAdministratorPermissions(
+				SetProductKeyCliCommand.Create(KeyProvider.GetLicenseKey()),
+				new ActivateWindowsCommand(),
+				new SetKmsServerCommand()
+			);
+			MessageHelper.ShowInformation("Активация", "Windows успешно активирована");
 		}
 	}
 }

@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using LibertyActivator.Models.CliCommands;
 
 namespace LibertyActivator.Contracts
 {
 	public interface ICmdExecutor
 	{
-		Task ExecuteCommandAcync(params string[] commands);
-		Task ExecuteCommandWithAdministratorPermissionsAsync(params string[] commands);
+		void ExecuteCommand(params ICliCommand[] commands);
+		void ExecuteCommandWithAdministratorPermissions(params ICliCommand[] commands);
 	}
 }

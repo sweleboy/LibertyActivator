@@ -111,6 +111,10 @@
     <Compile Include="Extensions\DependencyExtensions.cs" />
     <Compile Include="Helpers\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\MessageHelper.cs" />
+    <Compile Include="Models\CliCommands\ActivateWindowsCommand.cs" />
+    <Compile Include="Models\CliCommands\ICliCommand.cs" />
+    <Compile Include="Models\CliCommands\SetKmsServerCommand.cs" />
+    <Compile Include="Models\CliCommands\SetProductKeyCliCommand.cs" />
     <Compile Include="Models\LicenseKey.cs" />
     <Compile Include="Services\CmdExecutor.cs" />
     <Compile Include="Services\ContentDialogService.cs" />
