@@ -1,4 +1,5 @@
 ﻿using LibertyActivator.Commands;
+using LibertyActivator.Constants;
 using LibertyActivator.Contracts;
 using LibertyActivator.Helpers;
 using LibertyActivator.Models;
@@ -20,7 +21,7 @@ namespace LibertyActivator.ViewModels
 		private readonly IContentDialogService _contentDialogService;
 		private readonly ConfigurateLicenseKeyControl _configurateLicenseKeyControl;
 		private readonly ILicenseKeyService _licenseKeyService;
-		private readonly ICmdExecutor _cmdExecutor;
+		private readonly ICommandExecutor _cmdExecutor;
 		private LicenseKey _selectedKey;
 		public LicenseKey SelectedKey
 		{
@@ -31,7 +32,7 @@ namespace LibertyActivator.ViewModels
 		public ActivateViewModel(IContentDialogService contentDialogService,
 						   ConfigurateLicenseKeyControl configurateLicenseKeyControl,
 						   ILicenseKeyService licenseKeyService,
-						   ICmdExecutor cmdExecutor)
+						   ICommandExecutor cmdExecutor)
 		{
 			_contentDialogService = contentDialogService;
 			_configurateLicenseKeyControl = configurateLicenseKeyControl;
@@ -61,11 +62,17 @@ namespace LibertyActivator.ViewModels
 		}
 		private async Task ActivateSystemAsync()
 		{
-			await _cmdExecutor.ExecuteCommandWithAdministratorPermissionsAsync(
+			int activateResultCode = await _cmdExecutor.ExecuteCommandWithAdministratorPermissionsAsync(
 				SetProductKeyCliCommand.Create(KeyProvider.GetLicenseKey()),
 				new ActivateWindowsCommand(),
 				new SetKmsServerCommand()
 			);
+			if (activateResultCode != ExitCodes.SuccessExitCode)
+			{
+				MessageHelper.ShowError("Ошибка активации", "Произошла ошибка при активации системы. Попробуйте перезапустить приложение с правами администратора.");
+				return;
+			}
+
 			MessageHelper.ShowInformation("Активация", "Windows успешно активирована");
 		}
 	}

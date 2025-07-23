@@ -28,7 +28,9 @@ namespace LibertyActivator.Extensions
 			services.AddSingleton<IContentDialogService, ContentDialogService>();
 			services.AddTransient<ILicenseKeyService, LicenseKeyService>();
 			services.AddTransient<ILicenseKeysStorage, LicenseKeysStorage>();
-			services.AddTransient<ICmdExecutor, CmdExecutor>();
+			services.AddTransient<ICommandExecutor, CommandExecutor>();
+			services.AddTransient<IProcessBuilder, CmdProcessBuilder>();
+			services.AddTransient<IProcessExecutor, ProcessExecutor>();
 
 			return services;
 		}

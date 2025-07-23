@@ -103,10 +103,13 @@
     </Compile>
     <Compile Include="Commands\SafeAsyncRelayCommand.cs" />
     <Compile Include="Commands\SafeRelayCommand.cs" />
-    <Compile Include="Contracts\ICmdExecutor.cs" />
+    <Compile Include="Constants\ExitCodes.cs" />
+    <Compile Include="Contracts\ICommandExecutor.cs" />
     <Compile Include="Contracts\IContentDialogService.cs" />
     <Compile Include="Contracts\ILicenseKeyService.cs" />
     <Compile Include="Contracts\ILicenseKeysStorage.cs" />
+    <Compile Include="Contracts\IProcessBuilder.cs" />
+    <Compile Include="Contracts\IProcessExecutor.cs" />
     <Compile Include="Exceptions\ExceptionWithFriendlyMessage.cs" />
     <Compile Include="Extensions\DependencyExtensions.cs" />
     <Compile Include="Helpers\Converters\BoolToVisibilityConverter.cs" />
@@ -116,11 +119,13 @@
     <Compile Include="Models\CliCommands\SetKmsServerCommand.cs" />
     <Compile Include="Models\CliCommands\SetProductKeyCliCommand.cs" />
     <Compile Include="Models\LicenseKey.cs" />
-    <Compile Include="Services\CmdExecutor.cs" />
+    <Compile Include="Services\CmdProcessBuilder.cs" />
+    <Compile Include="Services\CommandExecutor.cs" />
     <Compile Include="Services\ContentDialogService.cs" />
     <Compile Include="Services\KeyProvider.cs" />
     <Compile Include="Services\LicenseKeyService.cs" />
     <Compile Include="Services\LicenseKeysStorage.cs" />
+    <Compile Include="Services\ProcessExecutor.cs" />
     <Compile Include="ViewModels\ActivateViewModel.cs" />
     <Compile Include="ViewModels\Base\ViewModelBase.cs" />
     <Compile Include="ViewModels\ConfigurateLicenseKeyViewModel.cs" />
