@@ -20,7 +20,7 @@ namespace LibertyActivator.Extensions
 		{
 			services.AddSingleton<ActivateWindow>();
 			services.AddSingleton<ConfigurateLicenseKeyControl>();
-			
+
 			services.AddSingleton<ActivateViewModel>();
 			services.AddSingleton<ContentDialogViewModel>();
 			services.AddSingleton<ConfigurateLicenseKeyViewModel>();
@@ -31,6 +31,8 @@ namespace LibertyActivator.Extensions
 			services.AddTransient<ICommandExecutor, CommandExecutor>();
 			services.AddTransient<IProcessBuilder, CmdProcessBuilder>();
 			services.AddTransient<IProcessExecutor, ProcessExecutor>();
+			services.AddTransient<IFileReader, LocalFileReader>();
+			services.AddTransient<IFileReader, RemoteFileReader>();
 
 			return services;
 		}
