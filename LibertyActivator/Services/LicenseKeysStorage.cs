@@ -31,7 +31,7 @@ namespace LibertyActivator.Services
 		{
 			var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-			var configDirectory = Path.Combine(appdataPath, nameof(Assembly.FullName));
+			var configDirectory = Path.Combine(appdataPath, typeof(LicenseKeysStorage).Assembly.GetName().Name);
 			if (!Directory.Exists(configDirectory))
 			{
 				Directory.CreateDirectory(configDirectory);

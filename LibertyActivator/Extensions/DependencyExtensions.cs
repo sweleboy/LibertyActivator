@@ -31,8 +31,8 @@ namespace LibertyActivator.Extensions
 			services.AddTransient<ICommandExecutor, CommandExecutor>();
 			services.AddTransient<IProcessBuilder, CmdProcessBuilder>();
 			services.AddTransient<IProcessExecutor, ProcessExecutor>();
-			services.AddTransient<IFileReader, LocalFileReader>();
-			services.AddTransient<IFileReader, RemoteFileReader>();
+			services.AddTransient<LocalFileReader>();
+			services.AddTransient<RemoteFileReader>();
 
 			return services;
 		}

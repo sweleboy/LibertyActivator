@@ -48,7 +48,6 @@ namespace LibertyActivator
 
 			var path = licenceKeyStorage.GetConfigPath();
 			if (File.Exists(path))
-
 			{
 				return;
 			}
