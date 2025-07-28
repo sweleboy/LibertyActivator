@@ -1,40 +1,37 @@
 ﻿using LibertyActivator.Contracts;
-using LibertyActivator.Helpers;
 using LibertyActivator.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace LibertyActivator.Services
 {
 	public class LicenseKeysStorage : ILicenseKeysStorage
 	{
-		private const string ConfigDirectory = "Configs";
 		private const string ConfigFileName = "keys.json";
 		private readonly string _configPath;
-		public LicenseKeysStorage()
+		private readonly LocalFileReader _localFileReader;
+		private readonly RemoteFileReader _remoteFileReader;
+
+		public LicenseKeysStorage(LocalFileReader localFileReader, RemoteFileReader remoteFileReader)
 		{
 			_configPath = BuildConfigPath();
+			_localFileReader = localFileReader;
+			_remoteFileReader = remoteFileReader;
 		}
 		public string GetConfigPath() => _configPath;
 		public IReadOnlyCollection<LicenseKey> GetKeys()
 		{
-			if (!File.Exists(_configPath))
-			{
-				MessageHelper.ShowError("Чтение из файла", "Произошла ошибка при чтении файла. Причина: файл не найден.");
-				return Array.Empty<LicenseKey>();
-			}
-
-			var keysAsJson = File.ReadAllText(_configPath);
+			var keysAsJson = _localFileReader.Read(_configPath);
 			return JsonConvert.DeserializeObject<IReadOnlyCollection<LicenseKey>>(keysAsJson);
 		}
 		private string BuildConfigPath()
 		{
-			var appDir = AppDomain.CurrentDomain.BaseDirectory;
+			var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-			var configDirectory = Path.Combine(appDir, ConfigDirectory);
-
+			var configDirectory = Path.Combine(appdataPath, nameof(Assembly.FullName));
 			if (!Directory.Exists(configDirectory))
 			{
 				Directory.CreateDirectory(configDirectory);
