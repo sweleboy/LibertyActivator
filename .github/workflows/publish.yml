@@ -16,27 +16,24 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup .NET
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: '8.0.x'
 
     - name: Publish Standalone EXE
-      run: |
-        dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish
+      run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish
 
     - name: Create Release ZIP
       shell: pwsh
       run: |
-        $version = ${{ github.ref_name }}.Substring(1)
-        Compress-Archive -Path publish/* -DestinationPath "LibertyActivator-$version.zip"
+        $version = "${{ github.ref_name }}".Substring(1)
+        Compress-Archive -Path "publish/*" -DestinationPath "LibertyActivator-$version.zip"
+        echo "ZIP_NAME=LibertyActivator-$version.zip" >> $env:GITHUB_ENV
 
     - name: Upload Release
       uses: softprops/action-gh-release@v2
-      with:
-        files: LibertyActivator-*.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Debug Token
-      run: echo "Token exists? ${{ secrets.GITHUB_TOKEN != '' }}"
+      with:
+        files: ${{ env.ZIP_NAME }}
