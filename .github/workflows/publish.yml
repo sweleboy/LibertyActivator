@@ -37,3 +37,6 @@ jobs:
         files: LibertyActivator-*.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Debug Token
+      run: echo "Token exists? ${{ secrets.GITHUB_TOKEN != '' }}"
