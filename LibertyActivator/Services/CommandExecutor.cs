@@ -20,12 +20,12 @@ namespace LibertyActivator.Services
 			_processExecutor = processExecutor;
 		}
 
-		public async Task<int> ExecuteCommandAsync(params ICliCommand[] commands)
+		public async Task<int> ExecuteCommandsAsync(params ICliCommand[] commands)
 		{
 			return await ExecuteCommandsAsync(commands, runAsAdmin: true);
 		}
 
-		public async Task<int> ExecuteCommandWithAdministratorPermissionsAsync(params ICliCommand[] commands)
+		public async Task<int> ExecuteCommandsWithAdministratorPermissionsAsync(params ICliCommand[] commands)
 		{
 			return await ExecuteCommandsAsync(commands, runAsAdmin: true);
 		}
@@ -35,7 +35,7 @@ namespace LibertyActivator.Services
 			try
 			{
 				var command = string.Join(" && ", commands.Select(x => x.Command));
-				var startInfo = _processBuilder.BuildProcessStartInfo(command);
+				var startInfo = _processBuilder.BuildCmdProcessStartInfo(command);
 
 				if (runAsAdmin == true)
 				{

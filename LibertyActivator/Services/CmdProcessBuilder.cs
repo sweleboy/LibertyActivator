@@ -5,7 +5,7 @@ namespace LibertyActivator.Services
 {
 	public class CmdProcessBuilder : IProcessBuilder
 	{
-		public ProcessStartInfo BuildProcessStartInfo(string command)
+		public ProcessStartInfo BuildCmdProcessStartInfo(string command)
 		{
 			return new ProcessStartInfo
 			{
