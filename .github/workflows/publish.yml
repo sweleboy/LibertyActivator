@@ -7,38 +7,33 @@ on:
     branches: [ main ]
 
 env:
-  DOTNET_VERSION: '8.0.x'  # Используем актуальную версию .NET 8
+  DOTNET_VERSION: '8.0.x'
   BUILD_CONFIGURATION: 'Release'
   OUTPUT_DIR: 'publish'
 
 jobs:
   build:
     name: Build .NET 8.0 App
-    runs-on: ubuntu-latest  # Или windows-latest, если нужна специфика Windows
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
-    # Установка .NET 8 SDK
+      
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
-
-    # Восстановление зависимостей
+        
     - name: Restore dependencies
       run: dotnet restore
-
-    # Сборка проекта
+      
     - name: Build
       run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
-
-    # Публикация (собирает в OUTPUT_DIR)
+      
     - name: Publish
       run: dotnet publish -c ${{ env.BUILD_CONFIGURATION }} -o ${{ github.workspace }}/${{ env.OUTPUT_DIR }} --no-build
-
-    # Загрузка артефактов (всё содержимое папки publish)
+      
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
