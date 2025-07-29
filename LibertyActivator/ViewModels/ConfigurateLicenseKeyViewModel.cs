@@ -41,8 +41,7 @@ namespace LibertyActivator.ViewModels
 		{
 			_licenseKeysStorage = licenseKeysStorage;
 			_contentDialogService = contentDialogService;
-			LoadKeys();
-			InitializeSelectedKey();
+			UpdateKeys();
 		}
 		protected override void InitializeCommands()
 		{
@@ -83,9 +82,12 @@ namespace LibertyActivator.ViewModels
 			OpenFileWithWait(keysFilePath);
 			UpdateKeys();
 		}
+
 		private void InitializeSelectedKey()
 		{
-			SelectedKey = Keys.FirstOrDefault(x => x.Name.Equals(Properties.Settings.Default.SelectedKeyName));
+			var selectedKey = Keys.FirstOrDefault(x => x.Name.Equals(Properties.Settings.Default.SelectedKeyName));
+			KeyProvider.SetLicenseKey(selectedKey);
+			SelectedKey = selectedKey;
 		}
 
 		private void CreateKeysFile(string filePath)
