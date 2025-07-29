@@ -5,6 +5,9 @@ using System.Windows.Input;
 
 namespace LibertyActivator.Commands
 {
+	/// <summary>
+	/// Представляет безопасные асинхронные команды для переключения кнопок.
+	/// </summary>
 	public class SafeRelayCommand : ICommand
 	{
 		private readonly Action<object> _execute;

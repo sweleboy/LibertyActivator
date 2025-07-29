@@ -1,20 +1,23 @@
 ﻿using LibertyActivator.Exceptions;
 using LibertyActivator.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace LibertyActivator.Commands
 {
+	/// <summary>
+	/// Представляет безопасные асинхронные команды для переключения кнопок.
+	/// </summary>
 	public class SafeAsyncRelayCommand : ICommand
 	{
+		#region Fields
 		private readonly Func<object, Task> _execute;
 		private readonly Func<object, bool> _canExecute;
 		private bool _isExecuting;
+		#endregion
 
+		#region Public
 		public event EventHandler CanExecuteChanged;
 
 		public SafeAsyncRelayCommand(
@@ -63,5 +66,6 @@ namespace LibertyActivator.Commands
 
 		public void RaiseCanExecuteChanged() =>
 			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+		#endregion
 	}
 }

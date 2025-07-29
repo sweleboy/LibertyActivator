@@ -71,7 +71,7 @@ namespace LibertyActivator.ViewModels
 			string keysFilePath = _licenseKeysStorage.GetConfigPath();
 			if (!File.Exists(keysFilePath))
 			{
-				bool canCreateKeysFile = MessageHelper.ShowQuestion("Просмотр ключей", "Невозможно открыть файл с лицензионными ключами. Причина: файл не найден\n\nХоти создать?") == MessageBoxResult.Yes;
+				bool canCreateKeysFile = MessageHelper.ShowQuestion("Просмотр ключей", "Невозможно открыть файл с лицензионными ключами. Причина: файл не найден\n\nХотите создать?") == MessageBoxResult.Yes;
 				if (!canCreateKeysFile)
 				{
 					return;
@@ -80,8 +80,8 @@ namespace LibertyActivator.ViewModels
 				CreateKeysFile(keysFilePath);
 			}
 
-			//TODO: при открытии файла блокировать взаимодействие с программой, при закрытии обновлять ключи.
-			Process.Start(keysFilePath);
+			OpenFileWithWait(keysFilePath);
+			UpdateKeys();
 		}
 		private void InitializeSelectedKey()
 		{
@@ -94,6 +94,24 @@ namespace LibertyActivator.ViewModels
 			keys.Add(new LicenseKey("TestOS", "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"));
 			var keysAsJson = JsonConvert.SerializeObject(keys);
 			File.WriteAllText(filePath, keysAsJson);
+		}
+		private void OpenFileWithWait(string filePath)
+		{
+			using (Process process = new Process())
+			{
+				process.StartInfo.FileName = filePath;
+				process.StartInfo.UseShellExecute = true;
+
+				process.Start();
+
+				process.WaitForExit();
+			}
+		}
+
+		private void UpdateKeys()
+		{
+			LoadKeys();
+			InitializeSelectedKey();
 		}
 	}
 }

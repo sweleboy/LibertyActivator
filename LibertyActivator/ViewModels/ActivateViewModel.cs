@@ -62,7 +62,7 @@ namespace LibertyActivator.ViewModels
 		}
 		private async Task ActivateSystemAsync()
 		{
-			int activateResultCode = await _cmdExecutor.ExecuteCommandWithAdministratorPermissionsAsync(
+			int activateResultCode = await _cmdExecutor.ExecuteCommandsWithAdministratorPermissionsAsync(
 				SetProductKeyCliCommand.Create(KeyProvider.GetLicenseKey()),
 				new ActivateWindowsCommand(),
 				new SetKmsServerCommand()
