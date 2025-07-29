@@ -1,42 +1,34 @@
-name: Build and Publish .NET 8.0 App
+name: Build and Release Windows EXE
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  DOTNET_VERSION: '8.0.x'
-  BUILD_CONFIGURATION: 'Release'
-  OUTPUT_DIR: 'publish'
+    tags: ['v*']
 
 jobs:
   build:
-    name: Build .NET 8.0 App
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
+    - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-        
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
-      
-    - name: Publish
-      run: dotnet publish -c ${{ env.BUILD_CONFIGURATION }} -o ${{ github.workspace }}/${{ env.OUTPUT_DIR }} --no-build
-      
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
+        dotnet-version: 8.0.x
+
+    - name: Publish Standalone EXE
+      run: |
+        dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish
+
+    - name: Create Release ZIP
+      shell: pwsh
+      run: |
+        $version = (Get-Item publish/*.exe).Basename
+        Compress-Archive -Path publish/* -DestinationPath "LibertyActivator-$version.zip"
+
+    - name: Upload Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: release
-        path: ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/**
-        retention-days: 1
+        files: LibertyActivator-*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
