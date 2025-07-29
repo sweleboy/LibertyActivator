@@ -1,0 +1,60 @@
+name: Build and Publish .NET 4.8.2 Application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_VERSION: '6.0.x'
+  SOLUTION_FILE: 'LibertyActivator.sln'
+  BUILD_CONFIGURATION: 'Release'
+  OUTPUT_DIR: 'publish'
+
+jobs:
+  build:
+    name: Build .NET 4.8.2 Application
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Установка .NET CLI (для работы с NuGet)
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # Восстановление NuGet пакетов
+    - name: Restore NuGet packages
+      run: dotnet restore ${{ env.SOLUTION_FILE }}
+
+    # Сборка решения
+    - name: Build Solution
+      run: msbuild ${{ env.SOLUTION_FILE }} /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform="Any CPU" /p:TargetFrameworkVersion=v4.8.2
+
+    # Публикация артефактов (опционально)
+    - name: Publish Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-output
+        path: ${{ github.workspace }}/**/bin/${{ env.BUILD_CONFIGURATION }}/**/*
+        retention-days: 1
+
+    # Если нужно создать zip-архив с релизом
+    - name: Create Release Zip
+      shell: pwsh
+      run: |
+        $releaseDir = "${{ github.workspace }}\${{ env.OUTPUT_DIR }}"
+        New-Item -ItemType Directory -Path $releaseDir -Force
+        Copy-Item -Path "${{ github.workspace }}\**\bin\${{ env.BUILD_CONFIGURATION }}\*" -Destination $releaseDir -Recurse -Force
+        Compress-Archive -Path "$releaseDir\*" -DestinationPath "$releaseDir\Release.zip" -Force
+
+    - name: Upload Release Zip
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-package
+        path: ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/Release.zip
+        retention-days: 1
