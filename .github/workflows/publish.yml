@@ -4,12 +4,17 @@ on:
   push:
     tags: ['v*']
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -23,11 +28,11 @@ jobs:
     - name: Create Release ZIP
       shell: pwsh
       run: |
-        $version = (Get-Item publish/*.exe).Basename
+        $version = ${{ github.ref_name }}.Substring(1)
         Compress-Archive -Path publish/* -DestinationPath "LibertyActivator-$version.zip"
 
     - name: Upload Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: LibertyActivator-*.zip
       env:
