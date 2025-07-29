@@ -22,38 +22,45 @@ jobs:
       uses: actions/checkout@v4
 
     # Установка .NET CLI (для работы с NuGet)
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v3
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: ${{ env.DOTNET_CLI_VERSION }}
 
     # Восстановление NuGet пакетов
     - name: Restore NuGet packages
       run: dotnet restore ${{ env.SOLUTION_FILE }}
 
-    # Сборка решения
+    # Сборка решения через MSBuild
     - name: Build Solution
       run: msbuild ${{ env.SOLUTION_FILE }} /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform="Any CPU" /p:TargetFrameworkVersion=v4.8.2
 
-    # Публикация артефактов (опционально)
-    - name: Publish Artifact
-      uses: actions/upload-artifact@v3
+    # Создание папки для артефактов
+    - name: Prepare Artifacts
+      shell: pwsh
+      run: |
+        $artifactDir = "${{ github.workspace }}\${{ env.OUTPUT_DIR }}"
+        New-Item -ItemType Directory -Path $artifactDir -Force
+        Copy-Item -Path "${{ github.workspace }}\**\bin\${{ env.BUILD_CONFIGURATION }}\*" -Destination $artifactDir -Recurse -Force
+
+    # Загрузка артефактов (используем v4)
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
       with:
         name: build-output
-        path: ${{ github.workspace }}/**/bin/${{ env.BUILD_CONFIGURATION }}/**/*
+        path: ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/**
         retention-days: 1
 
-    # Если нужно создать zip-архив с релизом
+    # Опционально: Создание ZIP-архива (если нужно)
     - name: Create Release Zip
+      if: success()
       shell: pwsh
       run: |
         $releaseDir = "${{ github.workspace }}\${{ env.OUTPUT_DIR }}"
-        New-Item -ItemType Directory -Path $releaseDir -Force
-        Copy-Item -Path "${{ github.workspace }}\**\bin\${{ env.BUILD_CONFIGURATION }}\*" -Destination $releaseDir -Recurse -Force
         Compress-Archive -Path "$releaseDir\*" -DestinationPath "$releaseDir\Release.zip" -Force
 
     - name: Upload Release Zip
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: release-package
         path: ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/Release.zip
