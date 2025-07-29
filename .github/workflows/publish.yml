@@ -1,4 +1,4 @@
-name: Build and Publish .NET 4.8.2 Application
+name: Build and Publish .NET 8.0 App
 
 on:
   push:
@@ -7,61 +7,41 @@ on:
     branches: [ main ]
 
 env:
-  DOTNET_VERSION: '6.0.x'
-  SOLUTION_FILE: 'LibertyActivator.sln'
+  DOTNET_VERSION: '8.0.x'  # Используем актуальную версию .NET 8
   BUILD_CONFIGURATION: 'Release'
   OUTPUT_DIR: 'publish'
 
 jobs:
   build:
-    name: Build .NET 4.8.2 Application
-    runs-on: windows-latest
+    name: Build .NET 8.0 App
+    runs-on: ubuntu-latest  # Или windows-latest, если нужна специфика Windows
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # Установка .NET CLI (для работы с NuGet)
-    - name: Setup .NET SDK
+    # Установка .NET 8 SDK
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ env.DOTNET_CLI_VERSION }}
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    # Восстановление NuGet пакетов
-    - name: Restore NuGet packages
-      run: dotnet restore ${{ env.SOLUTION_FILE }}
+    # Восстановление зависимостей
+    - name: Restore dependencies
+      run: dotnet restore
 
-    # Сборка решения через MSBuild
-    - name: Build Solution
-      run: msbuild ${{ env.SOLUTION_FILE }} /p:Configuration=${{ env.BUILD_CONFIGURATION }} /p:Platform="Any CPU" /p:TargetFrameworkVersion=v4.8.2
+    # Сборка проекта
+    - name: Build
+      run: dotnet build --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
-    # Создание папки для артефактов
-    - name: Prepare Artifacts
-      shell: pwsh
-      run: |
-        $artifactDir = "${{ github.workspace }}\${{ env.OUTPUT_DIR }}"
-        New-Item -ItemType Directory -Path $artifactDir -Force
-        Copy-Item -Path "${{ github.workspace }}\**\bin\${{ env.BUILD_CONFIGURATION }}\*" -Destination $artifactDir -Recurse -Force
+    # Публикация (собирает в OUTPUT_DIR)
+    - name: Publish
+      run: dotnet publish -c ${{ env.BUILD_CONFIGURATION }} -o ${{ github.workspace }}/${{ env.OUTPUT_DIR }} --no-build
 
-    # Загрузка артефактов (используем v4)
-    - name: Upload Build Artifacts
+    # Загрузка артефактов (всё содержимое папки publish)
+    - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: build-output
+        name: release
         path: ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/**
-        retention-days: 1
-
-    # Опционально: Создание ZIP-архива (если нужно)
-    - name: Create Release Zip
-      if: success()
-      shell: pwsh
-      run: |
-        $releaseDir = "${{ github.workspace }}\${{ env.OUTPUT_DIR }}"
-        Compress-Archive -Path "$releaseDir\*" -DestinationPath "$releaseDir\Release.zip" -Force
-
-    - name: Upload Release Zip
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-package
-        path: ${{ github.workspace }}/${{ env.OUTPUT_DIR }}/Release.zip
         retention-days: 1
