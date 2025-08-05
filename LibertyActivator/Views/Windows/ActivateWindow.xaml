@@ -79,7 +79,7 @@
 
 				<Button Cursor="Hand"
 						Height="175"
-						Width="175"
+						Width="175"						
 						Name="AcitvateButton"
 						Command="{Binding ActivateSystemCommand}"
 						Margin="15"

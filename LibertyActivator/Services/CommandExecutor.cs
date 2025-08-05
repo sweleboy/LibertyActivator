@@ -22,6 +22,7 @@ namespace LibertyActivator.Services
 			_processBuilder = processBuilder;
 			_processExecutor = processExecutor;
 		}
+
 		#region Public
 		/// <inheritdoc/>
 		public async Task<int> ExecuteCommandsAsync(params ICliCommand[] commands)

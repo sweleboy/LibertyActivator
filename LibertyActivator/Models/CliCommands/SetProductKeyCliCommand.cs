@@ -22,6 +22,7 @@ namespace LibertyActivator.Models.Commands
 		}
 		#endregion
 
+		#region Public
 		/// <summary>
 		/// Создаёт команду <see cref="SetProductKeyCliCommand"/>
 		/// </summary>
@@ -35,6 +36,7 @@ namespace LibertyActivator.Models.Commands
 
 			return new SetProductKeyCliCommand(licenseKey.Key);
 		}
+		#endregion
 
 		#region Private
 		/// <summary>
