@@ -5,16 +5,21 @@ using System.Threading.Tasks;
 
 namespace LibertyActivator.Services
 {
-    public class LocalFileReader : IFileReader
+	/// <summary>
+	/// Представляет локальный инструмент для чтения файлов.
+	/// </summary>
+	public class LocalFileReader : IFileReader
     {
-        public string Read(string path)
+		/// <inheritdoc/>
+		public string Read(string path)
         {
             FileHelper.ThrowIfFileNotExist(path);
 
             return File.ReadAllText(path);
-        }
+		}
 
-        public async Task<string> ReadAsync(string path)
+		/// <inheritdoc/>
+		public async Task<string> ReadAsync(string path)
         {
             FileHelper.ThrowIfFileNotExist(path);
 

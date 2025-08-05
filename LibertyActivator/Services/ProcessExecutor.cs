@@ -4,8 +4,12 @@ using System.Threading.Tasks;
 
 namespace LibertyActivator.Services
 {
+	/// <summary>
+	/// Представляет инструмент выполнения процессов.
+	/// </summary>
 	public class ProcessExecutor : IProcessExecutor
 	{
+		/// <inheritdoc/>
 		public async Task<int> ExecuteAsync(ProcessStartInfo startInfo)
 		{
 			using (var process = new Process { StartInfo = startInfo })

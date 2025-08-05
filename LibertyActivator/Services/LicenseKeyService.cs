@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace LibertyActivator.Services
 {
+	/// <summary>
+	/// Представляет инструмент взаимодействия с лицензионными ключами.
+	/// </summary>
 	public class LicenseKeyService : ILicenseKeyService
 	{
 		private readonly ILicenseKeysStorage _licenseKeysStorage;
@@ -12,6 +15,8 @@ namespace LibertyActivator.Services
 		{
 			_licenseKeysStorage = licenseKeysStorage;
 		}
+
+		/// <inheritdoc/>
 		public LicenseKey GetKeyByName(string name)
 		{
 			var keys = _licenseKeysStorage.GetKeys();
