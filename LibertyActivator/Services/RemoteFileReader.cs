@@ -4,8 +4,12 @@ using System.Threading.Tasks;
 
 namespace LibertyActivator.Services
 {
+	/// <summary>
+	/// Представляет локальный инструмент для чтения файлов.
+	/// </summary>
 	public class RemoteFileReader : IFileReader
 	{
+		/// <inheritdoc/>
 		public string Read(string url)
 		{
 			using (var httpClient = new HttpClient())
@@ -17,6 +21,7 @@ namespace LibertyActivator.Services
 			}
 		}
 
+		/// <inheritdoc/>
 		public async Task<string> ReadAsync(string url)
 		{
 			using (var httpClient = new HttpClient())

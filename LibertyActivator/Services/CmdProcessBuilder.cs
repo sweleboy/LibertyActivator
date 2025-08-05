@@ -3,8 +3,12 @@ using System.Diagnostics;
 
 namespace LibertyActivator.Services
 {
+	/// <summary>
+	/// Представляет инструмент для построения процессов.
+	/// </summary>
 	public class CmdProcessBuilder : IProcessBuilder
 	{
+		/// <inheritdoc/>
 		public ProcessStartInfo BuildCmdProcessStartInfo(string command)
 		{
 			return new ProcessStartInfo

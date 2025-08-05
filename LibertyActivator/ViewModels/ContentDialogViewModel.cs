@@ -6,10 +6,13 @@ using System.Windows.Input;
 
 namespace LibertyActivator.ViewModels
 {
+	/// <summary>
+	/// Представляет модель представления для работы с диалогом.
+	/// </summary>
 	public class ContentDialogViewModel : ViewModelBase
 	{
+		#region Data
 		public event EventHandler DialogClosed;
-
 		public ICommand CloseDialogCommand { get; set; }
 
 		private bool _isShowDialog;
@@ -32,12 +35,19 @@ namespace LibertyActivator.ViewModels
 			get => _currentContent;
 			set => SetProperty(ref _currentContent, value, nameof(CurrentContent));
 		}
+		#endregion
 
+		#region Override
 		protected override void InitializeCommands()
 		{
 			CloseDialogCommand = new SafeRelayCommand(Close);
 		}
+		#endregion
 
+		#region Public
+		/// <summary>
+		/// Закрывает диалог.
+		/// </summary>
 		public void Close()
 		{
 			Title = string.Empty;
@@ -45,5 +55,6 @@ namespace LibertyActivator.ViewModels
 			CurrentContent = null;
 			DialogClosed?.Invoke(this, EventArgs.Empty);
 		}
+		#endregion
 	}
 }

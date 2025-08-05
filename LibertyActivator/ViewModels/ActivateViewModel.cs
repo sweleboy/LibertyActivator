@@ -13,8 +13,12 @@ using System.Windows.Input;
 
 namespace LibertyActivator.ViewModels
 {
+	/// <summary>
+	/// Представляет модель представления для активации.
+	/// </summary>
 	public class ActivateViewModel : ViewModelBase
 	{
+		#region Data
 		public ICommand ShowSettingsCommand { get; set; }
 		public ICommand ActivateSystemCommand { get; set; }
 
@@ -28,7 +32,9 @@ namespace LibertyActivator.ViewModels
 			get => _selectedKey;
 			set => SetProperty(ref _selectedKey, value, nameof(SelectedKey));
 		}
+		#endregion
 
+		#region .ctor
 		public ActivateViewModel(IContentDialogService contentDialogService,
 						   ConfigurateLicenseKeyControl configurateLicenseKeyControl,
 						   ILicenseKeyService licenseKeyService,
@@ -41,25 +47,45 @@ namespace LibertyActivator.ViewModels
 			InitializeSelectedKey();
 			UpdateSelectedKey();
 		}
+		#endregion
+
+		#region Protected
 		protected override void InitializeCommands()
 		{
-			ShowSettingsCommand = new SafeAsyncRelayCommand(ShowSettingsControl);
+			ShowSettingsCommand = new SafeAsyncRelayCommand(ShowSettingsControlAsync);
 			ActivateSystemCommand = new SafeAsyncRelayCommand(ActivateSystemAsync);
 		}
-		private async Task ShowSettingsControl()
+		#endregion
+
+		#region Private
+		/// <summary>
+		/// Показывает контролл настройки-конфигурацию.
+		/// </summary>
+		private async Task ShowSettingsControlAsync()
 		{
 			await _contentDialogService.ShowDialogAsync("Настройки", _configurateLicenseKeyControl);
 			UpdateSelectedKey();
 		}
+
+		/// <summary>
+		/// Инициализирует выбранный ключ.
+		/// </summary>
 		private void InitializeSelectedKey()
 		{
 			var key = _licenseKeyService.GetKeyByName(Properties.Settings.Default.SelectedKeyName);
 			KeyProvider.SetLicenseKey(key);
 		}
+
+		/// <summary>
+		/// Обновляет выбранный ключ.
+		/// </summary>
 		private void UpdateSelectedKey()
 		{
 			SelectedKey = KeyProvider.GetLicenseKey();
 		}
+		/// <summary>
+		/// Активирует систему.
+		/// </summary>
 		private async Task ActivateSystemAsync()
 		{
 			int activateResultCode = await _cmdExecutor.ExecuteCommandsWithAdministratorPermissionsAsync(
@@ -75,5 +101,6 @@ namespace LibertyActivator.ViewModels
 
 			MessageHelper.ShowInformation("Активация", "Windows успешно активирована");
 		}
+		#endregion
 	}
 }
