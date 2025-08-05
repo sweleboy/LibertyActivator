@@ -98,7 +98,7 @@ namespace LibertyActivator.ViewModels
 					return;
 				}
 
-				CreateKeysFile(keysFilePath);
+				CreateDefaultKeysFile(keysFilePath);
 			}
 
 			OpenFileWithWait(keysFilePath);
@@ -113,18 +113,6 @@ namespace LibertyActivator.ViewModels
 			var selectedKey = Keys.FirstOrDefault(x => x.Name.Equals(Properties.Settings.Default.SelectedKeyName));
 			KeyProvider.SetLicenseKey(selectedKey);
 			SelectedKey = selectedKey;
-		}
-
-		/// <summary>
-		/// Создаёт файл с ключами.
-		/// </summary>
-		/// <param name="filePath">Путь до файла.</param>
-		private void CreateKeysFile(string filePath)
-		{
-			var keys = new List<LicenseKey>();
-			keys.Add(new LicenseKey("TestOS", "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"));
-			var keysAsJson = JsonConvert.SerializeObject(keys);
-			File.WriteAllText(filePath, keysAsJson);
 		}
 
 		/// <summary>
@@ -151,6 +139,18 @@ namespace LibertyActivator.ViewModels
 		{
 			LoadKeys();
 			InitializeSelectedKey();
+		}
+
+		/// <summary>
+		/// Создаёт файл с ключами по умолчанию.
+		/// </summary>
+		/// <param name="filePath">Путь до файла.</param>
+		private void CreateDefaultKeysFile(string filePath)
+		{
+			var keys = new List<LicenseKey>();
+			keys.Add(new LicenseKey("TestOS", "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"));
+			var keysAsJson = JsonConvert.SerializeObject(keys);
+			File.WriteAllText(filePath, keysAsJson);
 		}
 		#endregion
 	}
