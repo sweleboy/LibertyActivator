@@ -4,6 +4,7 @@ using LibertyActivator.ViewModels;
 using LibertyActivator.Views.Controls;
 using LibertyActivator.Views.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Prism.Events;
 
 namespace LibertyActivator.Extensions
 {
@@ -20,12 +21,15 @@ namespace LibertyActivator.Extensions
 		{
 			services.AddSingleton<ActivateWindow>();
 			services.AddSingleton<ConfigurateLicenseKeyControl>();
+			services.AddSingleton<ActivateButtonContentControl>();
 
 			services.AddSingleton<ActivateViewModel>();
 			services.AddSingleton<ContentDialogViewModel>();
 			services.AddSingleton<ConfigurateLicenseKeyViewModel>();
+			services.AddSingleton<ActivateButtonContentViewModel>();
 
 			services.AddSingleton<IContentDialogService, ContentDialogService>();
+			services.AddSingleton<IEventAggregator, EventAggregator>();
 			services.AddTransient<ILicenseKeyService, LicenseKeyService>();
 			services.AddTransient<ILicenseKeysStorage, LicenseKeysStorage>();
 			services.AddTransient<ICommandExecutor, CommandExecutor>();

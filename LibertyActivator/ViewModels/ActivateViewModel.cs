@@ -1,6 +1,8 @@
 ﻿using LibertyActivator.Commands;
 using LibertyActivator.Constants;
 using LibertyActivator.Contracts;
+using LibertyActivator.Events;
+using LibertyActivator.Exceptions;
 using LibertyActivator.Helpers;
 using LibertyActivator.Models;
 using LibertyActivator.Models.CliCommands;
@@ -8,6 +10,7 @@ using LibertyActivator.Models.Commands;
 using LibertyActivator.Services;
 using LibertyActivator.ViewModels.Base;
 using LibertyActivator.Views.Controls;
+using Prism.Events;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -26,6 +29,7 @@ namespace LibertyActivator.ViewModels
 		private readonly ConfigurateLicenseKeyControl _configurateLicenseKeyControl;
 		private readonly ILicenseKeyService _licenseKeyService;
 		private readonly ICommandExecutor _cmdExecutor;
+		private readonly IEventAggregator _eventAggregator;
 		private LicenseKey _selectedKey;
 		public LicenseKey SelectedKey
 		{
@@ -38,12 +42,14 @@ namespace LibertyActivator.ViewModels
 		public ActivateViewModel(IContentDialogService contentDialogService,
 						   ConfigurateLicenseKeyControl configurateLicenseKeyControl,
 						   ILicenseKeyService licenseKeyService,
-						   ICommandExecutor cmdExecutor)
+						   ICommandExecutor cmdExecutor,
+						   IEventAggregator eventAggregator)
 		{
 			_contentDialogService = contentDialogService;
 			_configurateLicenseKeyControl = configurateLicenseKeyControl;
 			_licenseKeyService = licenseKeyService;
 			_cmdExecutor = cmdExecutor;
+			_eventAggregator = eventAggregator;
 			InitializeSelectedKey();
 			UpdateSelectedKey();
 		}
@@ -83,23 +89,43 @@ namespace LibertyActivator.ViewModels
 		{
 			SelectedKey = KeyProvider.GetLicenseKey();
 		}
+
 		/// <summary>
 		/// Активирует систему.
 		/// </summary>
 		private async Task ActivateSystemAsync()
 		{
+			SetActivationState(true);
+
+			var key = KeyProvider.GetLicenseKey();
+			if (key == null)
+			{
+				throw new ExceptionWithFriendlyMessage("Не возможно выполнить активацию. Причина: лицензионный ключ не выбран");
+			}
+
 			int activateResultCode = await _cmdExecutor.ExecuteCommandsWithAdministratorPermissionsAsync(
 				SetProductKeyCliCommand.Create(KeyProvider.GetLicenseKey()),
 				new ActivateWindowsCommand(),
 				new SetKmsServerCommand()
 			);
+
 			if (activateResultCode != ExitCodes.SuccessExitCode)
 			{
 				MessageHelper.ShowError("Ошибка активации", "Произошла ошибка при активации системы. Попробуйте перезапустить приложение с правами администратора.");
 				return;
 			}
 
+			SetActivationState(false);
 			MessageHelper.ShowInformation("Активация", "Windows успешно активирована");
+		}
+
+		/// <summary>
+		/// Устанавливает состояние актвации.
+		/// </summary>
+		/// <param name="status">Состояние - истина, если активация активна.</param>
+		private void SetActivationState(bool state)
+		{
+			_eventAggregator.GetEvent<ActivateSystemEvent>().Publish(state);
 		}
 		#endregion
 	}
