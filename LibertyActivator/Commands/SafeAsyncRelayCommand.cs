@@ -1,7 +1,11 @@
-﻿using LibertyActivator.Exceptions;
+﻿using LibertyActivator.Contracts;
+using LibertyActivator.Exceptions;
 using LibertyActivator.Helpers;
+using Microsoft.Extensions.DependencyInjection;
+using Prism.Dialogs;
 using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace LibertyActivator.Commands
@@ -55,7 +59,9 @@ namespace LibertyActivator.Commands
 			}
 			catch (ExceptionWithFriendlyMessage exc)
 			{
-				MessageHelper.ShowError("Ошибка", exc.Message);
+				var exceptionHandler = ((App)Application.Current).ServiceProvider.GetRequiredService<IExceptionHandler>() 
+					?? throw new ArgumentNullException(nameof(IExceptionHandler));
+				exceptionHandler.Handle(exc);
 			}
 			finally
 			{

@@ -29,7 +29,7 @@ namespace LibertyActivator.Models.Commands
 		/// <param name="licenseKey">Лицензионный ключ.</param>
 		public static SetProductKeyCliCommand Create(LicenseKey licenseKey)
 		{
-			if (string.IsNullOrEmpty(licenseKey.Key))
+			if (string.IsNullOrEmpty(licenseKey?.Key))
 			{
 				throw new ExceptionWithFriendlyMessage("Не возможно инициализировать команду установки ключа. Причина: ключ не может быть пустым");
 			}

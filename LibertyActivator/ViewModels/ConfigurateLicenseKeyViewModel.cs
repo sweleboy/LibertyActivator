@@ -1,5 +1,6 @@
 ﻿using LibertyActivator.Commands;
 using LibertyActivator.Contracts;
+using LibertyActivator.Exceptions;
 using LibertyActivator.Helpers;
 using LibertyActivator.Models;
 using LibertyActivator.Services;
@@ -67,8 +68,7 @@ namespace LibertyActivator.ViewModels
 		{
 			if (SelectedKey == null)
 			{
-				MessageHelper.ShowError("Ошибка", "Не возможно сохранить лицензионный ключ. Причина: лицензионный ключ не выбран");
-				return;
+				throw new ExceptionWithFriendlyMessage("Не возможно сохранить лицензионный ключ. Причина: лицензионный ключ не выбран");
 			}
 
 			KeyProvider.SetLicenseKey(SelectedKey);

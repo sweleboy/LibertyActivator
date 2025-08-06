@@ -111,8 +111,7 @@ namespace LibertyActivator.ViewModels
 
 			if (activateResultCode != ExitCodes.SuccessExitCode)
 			{
-				MessageHelper.ShowError("Ошибка активации", "Произошла ошибка при активации системы. Попробуйте перезапустить приложение с правами администратора.");
-				return;
+				throw new ExceptionWithFriendlyMessage("Произошла ошибка при активации системы. Попробуйте перезапустить приложение с правами администратора");
 			}
 
 			SetActivationState(false);
