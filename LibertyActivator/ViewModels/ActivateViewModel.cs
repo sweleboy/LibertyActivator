@@ -1,6 +1,7 @@
 ﻿using LibertyActivator.Commands;
 using LibertyActivator.Constants;
 using LibertyActivator.Contracts;
+using LibertyActivator.Events;
 using LibertyActivator.Helpers;
 using LibertyActivator.Models;
 using LibertyActivator.Models.CliCommands;
@@ -8,6 +9,7 @@ using LibertyActivator.Models.Commands;
 using LibertyActivator.Services;
 using LibertyActivator.ViewModels.Base;
 using LibertyActivator.Views.Controls;
+using Prism.Events;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -26,6 +28,7 @@ namespace LibertyActivator.ViewModels
 		private readonly ConfigurateLicenseKeyControl _configurateLicenseKeyControl;
 		private readonly ILicenseKeyService _licenseKeyService;
 		private readonly ICommandExecutor _cmdExecutor;
+		private readonly IEventAggregator _eventAggregator;
 		private LicenseKey _selectedKey;
 		public LicenseKey SelectedKey
 		{
@@ -38,12 +41,14 @@ namespace LibertyActivator.ViewModels
 		public ActivateViewModel(IContentDialogService contentDialogService,
 						   ConfigurateLicenseKeyControl configurateLicenseKeyControl,
 						   ILicenseKeyService licenseKeyService,
-						   ICommandExecutor cmdExecutor)
+						   ICommandExecutor cmdExecutor,
+						   IEventAggregator eventAggregator)
 		{
 			_contentDialogService = contentDialogService;
 			_configurateLicenseKeyControl = configurateLicenseKeyControl;
 			_licenseKeyService = licenseKeyService;
 			_cmdExecutor = cmdExecutor;
+			_eventAggregator = eventAggregator;
 			InitializeSelectedKey();
 			UpdateSelectedKey();
 		}
@@ -88,6 +93,7 @@ namespace LibertyActivator.ViewModels
 		/// </summary>
 		private async Task ActivateSystemAsync()
 		{
+			_eventAggregator.GetEvent<ActivateSystemEvent>().Publish(true);
 			int activateResultCode = await _cmdExecutor.ExecuteCommandsWithAdministratorPermissionsAsync(
 				SetProductKeyCliCommand.Create(KeyProvider.GetLicenseKey()),
 				new ActivateWindowsCommand(),
@@ -98,6 +104,7 @@ namespace LibertyActivator.ViewModels
 				MessageHelper.ShowError("Ошибка активации", "Произошла ошибка при активации системы. Попробуйте перезапустить приложение с правами администратора.");
 				return;
 			}
+			_eventAggregator.GetEvent<ActivateSystemEvent>().Publish(false);
 
 			MessageHelper.ShowInformation("Активация", "Windows успешно активирована");
 		}

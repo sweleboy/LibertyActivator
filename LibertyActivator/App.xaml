@@ -7,6 +7,7 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:IsActivateToActivateTextConverter x:Key="IsActivateToActivateTextConverter"/>
 
 			<QuadraticEase EasingMode="EaseInOut"
 						   x:Key="EaseInOut" />

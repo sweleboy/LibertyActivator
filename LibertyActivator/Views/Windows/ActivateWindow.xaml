@@ -85,11 +85,12 @@
 						Margin="15"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center">
-					<ui:SymbolIcon Symbol="Play28"
+					<!--<ui:SymbolIcon Symbol="Play28"
 								   Margin="0"
 								   HorizontalAlignment="Center"
-								   VerticalAlignment="Center" />
-				</Button>
+								   VerticalAlignment="Center" />-->
+                    <controls:ActivateButtonContentControl x:Name="ActivateButtonContentControl"/>
+                </Button>
 
 				<StackPanel Orientation="Horizontal"
 							HorizontalAlignment="Center">
