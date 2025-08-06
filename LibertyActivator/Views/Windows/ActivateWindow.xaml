@@ -77,7 +77,7 @@
 						   Text="{Binding SelectedKey.Name}" />
 
 
-				<Button Cursor="Hand"
+                <Button Cursor="Hand"
 						Height="175"
 						Width="175"						
 						Name="AcitvateButton"
@@ -85,10 +85,6 @@
 						Margin="15"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center">
-					<!--<ui:SymbolIcon Symbol="Play28"
-								   Margin="0"
-								   HorizontalAlignment="Center"
-								   VerticalAlignment="Center" />-->
                     <controls:ActivateButtonContentControl x:Name="ActivateButtonContentControl"/>
                 </Button>
 
