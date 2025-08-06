@@ -8,11 +8,7 @@ namespace LibertyActivator.Helpers.Converters
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is bool flag == true)
-			{
-				return "Активация...";
-			}
-			return "Активировать";
+			return (bool?)value == true ? "Активация..." : "Активировать";
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

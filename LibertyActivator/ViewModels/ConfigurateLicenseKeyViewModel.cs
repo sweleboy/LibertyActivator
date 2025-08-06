@@ -127,7 +127,7 @@ namespace LibertyActivator.ViewModels
 				process.StartInfo.UseShellExecute = true;
 
 				process.Start();
-
+				//TODO: Ошибка при открытии файла в VS - System.InvalidOperationException: "No process is associated with this object."
 				process.WaitForExit();
 			}
 		}
