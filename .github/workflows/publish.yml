@@ -25,20 +25,24 @@ jobs:
           --self-contained true `
           -p:PublishSingleFile=true `
           -p:IncludeAllContentForSelfExtract=true `
-          -p:EnableCompressionInSingleFile=true `
           -o publish
+        
+        $exeName = (Get-ChildItem -Path "publish" -Filter "*.exe").Name
+        echo "EXE_NAME=$exeName" >> $env:GITHUB_ENV
 
-    - name: Create Release ZIP
+    - name: Prepare Release Assets
       shell: pwsh
       run: |
-        $version = "${{ github.ref_name }}".Substring(1)
-        $exeName = (Get-ChildItem -Path "publish" -Filter "*.exe").Name
-        Compress-Archive -Path "publish/$exeName" -DestinationPath "LibertyActivator-$version.zip"
+        $version = "${{ github.ref_name }}".Substring(1)        
+        Copy-Item -Path "publish/${{ env.EXE_NAME }}" -Destination "${{ env.EXE_NAME }}"        
+        Compress-Archive -Path "publish/*" -DestinationPath "LibertyActivator-$version.zip"
         echo "ZIP_NAME=LibertyActivator-$version.zip" >> $env:GITHUB_ENV
 
-    - name: Upload Release
+    - name: Upload Release Assets
       uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: ${{ env.ZIP_NAME }}
+        files: |
+          ${{ env.EXE_NAME }}
+          ${{ env.ZIP_NAME }}
