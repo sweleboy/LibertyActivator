@@ -1,8 +1,6 @@
 ﻿using LibertyActivator.Contracts;
 using LibertyActivator.Exceptions;
-using LibertyActivator.Helpers;
 using Microsoft.Extensions.DependencyInjection;
-using Prism.Dialogs;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -59,7 +57,7 @@ namespace LibertyActivator.Commands
 			}
 			catch (ExceptionWithFriendlyMessage exc)
 			{
-				var exceptionHandler = ((App)Application.Current).ServiceProvider.GetRequiredService<IExceptionHandler>() 
+				var exceptionHandler = ((App)Application.Current).ServiceProvider.GetRequiredService<IExceptionHandler>()
 					?? throw new ArgumentNullException(nameof(IExceptionHandler));
 				exceptionHandler.Handle(exc);
 			}

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace LibertyActivator.ViewModels.Base
 {
@@ -41,6 +42,13 @@ namespace LibertyActivator.ViewModels.Base
 		protected virtual void InitializeCommands()
 		{
 			return;
+		}
+		/// <summary>
+		/// Выполняет инициализацию/загрузку модели представления.
+		/// </summary>
+		public virtual Task InitializeAsync()
+		{
+			return Task.CompletedTask;
 		}
 	}
 }

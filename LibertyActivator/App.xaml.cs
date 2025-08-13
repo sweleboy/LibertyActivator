@@ -67,23 +67,10 @@ namespace LibertyActivator
 		private async Task LoadKeysAsync()
 		{
 			var licenceKeyStorage = ServiceProvider.GetRequiredService<ILicenseKeysStorage>();
-			var remoteFileReader = ServiceProvider.GetRequiredService<RemoteFileReader>();
+			var licenseKeyService = ServiceProvider.GetRequiredService<ILicenseKeyService>();
 
-			var path = licenceKeyStorage.GetConfigPath();
-			if (File.Exists(path))
-			{
-				return;
-			}
-
-			string licenceKeysRemoteUrl = ConfigurationManager.AppSettings["LicenceKeysRemoteUrl"]
-					?? throw new ExceptionWithFriendlyMessage("Ссылка на получение ключей не указана в конфигурации.");
-
-			var remoteKeysContent = await remoteFileReader.ReadAsync(licenceKeysRemoteUrl);
-
-			var keys = JsonDeserializeHelper.DeserializeLicenseKeysFromJson(remoteKeysContent);
-			remoteKeysContent = Newtonsoft.Json.JsonConvert.SerializeObject(keys);
-
-			File.WriteAllText(path, remoteKeysContent);
+			var keys = await licenseKeyService.DownloadKeysFromRemoteSourceAsync();
+			await licenseKeyService.SaveKeysToFileAsync(licenceKeyStorage.GetConfigPath(), keys);
 		}
 	}
 }

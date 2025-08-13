@@ -8,9 +8,11 @@ using LibertyActivator.ViewModels.Base;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -23,11 +25,13 @@ namespace LibertyActivator.ViewModels
 	{
 		#region Data
 		public ICommand SaveSelectedLicenseKeyCommand { get; set; }
+		public ICommand ResetKeysConfigurationCommand { get; set; }
 		public ICommand OpenKeysFileCommand { get; set; }
 
 		private readonly ILicenseKeysStorage _licenseKeysStorage;
 		private readonly IContentDialogService _contentDialogService;
-
+		private readonly RemoteFileReader _remoteFileReader;
+		private readonly ILicenseKeyService _licenseKeyService;
 		private ObservableCollection<LicenseKey> _keys = new ObservableCollection<LicenseKey>();
 		public ObservableCollection<LicenseKey> Keys
 		{
@@ -44,11 +48,15 @@ namespace LibertyActivator.ViewModels
 		#endregion
 
 		#region .ctor
-		public ConfigurateLicenseKeyViewModel(ILicenseKeysStorage licenseKeysStorage, IContentDialogService contentDialogService)
+		public ConfigurateLicenseKeyViewModel(ILicenseKeysStorage licenseKeysStorage,
+			IContentDialogService contentDialogService,
+			RemoteFileReader remoteFileReader,
+			ILicenseKeyService licenseKeyService)
 		{
 			_licenseKeysStorage = licenseKeysStorage;
 			_contentDialogService = contentDialogService;
-			UpdateKeys();
+			_remoteFileReader = remoteFileReader;
+			_licenseKeyService = licenseKeyService;
 		}
 		#endregion
 
@@ -56,7 +64,15 @@ namespace LibertyActivator.ViewModels
 		protected override void InitializeCommands()
 		{
 			SaveSelectedLicenseKeyCommand = new SafeRelayCommand(SaveSelectedLicenseKey);
+			ResetKeysConfigurationCommand = new SafeAsyncRelayCommand(ResetKeysConfigurationAsync);
 			OpenKeysFileCommand = new SafeRelayCommand(OpenKeysFile);
+		}
+
+		public override Task InitializeAsync()
+		{
+			UpdateKeys();
+
+			return base.InitializeAsync();
 		}
 		#endregion
 
@@ -75,6 +91,20 @@ namespace LibertyActivator.ViewModels
 			Properties.Settings.Default.SelectedKeyName = SelectedKey.Name;
 			Properties.Settings.Default.Save();
 			_contentDialogService.CloseDialog();
+		}
+		/// <summary>
+		/// Сбрасывает конфигурацию ключей.
+		/// </summary>
+		private async Task ResetKeysConfigurationAsync()
+		{
+			var keys = await _licenseKeyService.DownloadKeysFromRemoteSourceAsync();
+			await _licenseKeyService.SaveKeysToFileAsync(_licenseKeysStorage.GetConfigPath(), keys);
+
+			LoadKeys();
+			SelectedKey = null;
+			KeyProvider.SetLicenseKey(null);
+			Properties.Settings.Default.SelectedKeyName = string.Empty;
+			Properties.Settings.Default.Save();
 		}
 
 		/// <summary>
@@ -104,7 +134,7 @@ namespace LibertyActivator.ViewModels
 			OpenFileWithWait(keysFilePath);
 			UpdateKeys();
 		}
-		
+
 		/// <summary>
 		/// Инициализирует выбранный ключ.
 		/// </summary>
@@ -123,11 +153,15 @@ namespace LibertyActivator.ViewModels
 		{
 			using (Process process = new Process())
 			{
-				process.StartInfo.FileName = filePath;
-				process.StartInfo.UseShellExecute = true;
+				process.StartInfo = new ProcessStartInfo
+				{
+					FileName = "explorer.exe",
+					Arguments = $"{Path.GetDirectoryName(filePath)}",
+					UseShellExecute = false,
+					CreateNoWindow = true
+				};
 
 				process.Start();
-				//TODO: Ошибка при открытии файла в VS - System.InvalidOperationException: "No process is associated with this object."
 				process.WaitForExit();
 			}
 		}

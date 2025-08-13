@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace LibertyActivator.Services
 {
 	/// <summary>
-	/// Представляет инструмент для построения процессов.
+	/// Представляет инструмент для построения процессов связанных с командной строкой.
 	/// </summary>
 	public class CmdProcessBuilder : IProcessBuilder
 	{

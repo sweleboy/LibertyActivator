@@ -14,7 +14,8 @@
 		Background="Transparent"
 		WindowStartupLocation="CenterScreen"
 		Height="375"
-		Width="275">
+		Width="275"
+		Loaded="Window_Loaded">
 	<Border CornerRadius="10"
 			Background="#1b1b1b">
 		<Grid>

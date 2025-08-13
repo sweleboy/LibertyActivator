@@ -50,8 +50,6 @@ namespace LibertyActivator.ViewModels
 			_licenseKeyService = licenseKeyService;
 			_cmdExecutor = cmdExecutor;
 			_eventAggregator = eventAggregator;
-			InitializeSelectedKey();
-			UpdateSelectedKey();
 		}
 		#endregion
 
@@ -60,6 +58,13 @@ namespace LibertyActivator.ViewModels
 		{
 			ShowSettingsCommand = new SafeAsyncRelayCommand(ShowSettingsControlAsync);
 			ActivateSystemCommand = new SafeAsyncRelayCommand(ActivateSystemAsync);
+		}
+		public override Task InitializeAsync()
+		{
+			InitializeSelectedKey();
+			UpdateSelectedKey();
+
+			return base.InitializeAsync();
 		}
 		#endregion
 

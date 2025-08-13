@@ -1,6 +1,6 @@
 ﻿using LibertyActivator.Contracts;
+using LibertyActivator.Helpers;
 using LibertyActivator.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +36,7 @@ namespace LibertyActivator.Services
 		public IReadOnlyCollection<LicenseKey> GetKeys()
 		{
 			var keysAsJson = _localFileReader.Read(_configPath);
-			return JsonConvert.DeserializeObject<IReadOnlyCollection<LicenseKey>>(keysAsJson);
+			return JsonDeserializeHelper.DeserializeLicenseKeysFromJson(keysAsJson);
 		}
 		#endregion
 
